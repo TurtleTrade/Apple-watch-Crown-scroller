@@ -5,6 +5,7 @@ struct ContentView: View {
     @StateObject private var connectivity = PhoneConnectivity.shared
     @State private var bookText: String = ReaderView.sampleText
     @State private var showImporter = false
+    @State private var importError: String?
 
     var body: some View {
         NavigationStack {
@@ -34,13 +35,23 @@ struct ContentView: View {
                                 bookText = s
                             } else if let s = String(data: data, encoding: .utf16) {
                                 bookText = s
+                            } else {
+                                importError = "Could not decode this file as UTF-8 or UTF-16 text."
                             }
                         } catch {
-                            // Keep existing text on failure
+                            importError = error.localizedDescription
                         }
                     case .failure:
                         break
                     }
+                }
+                .alert("Import failed", isPresented: Binding(
+                    get: { importError != nil },
+                    set: { if !$0 { importError = nil } }
+                )) {
+                    Button("OK", role: .cancel) { importError = nil }
+                } message: {
+                    Text(importError ?? "")
                 }
         }
     }

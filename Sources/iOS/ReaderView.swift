@@ -8,8 +8,6 @@ struct ReaderView: View {
     @State private var scrollTick: CGFloat = 0
     @State private var fontSize: Double = 20
 
-    private let timer = Timer.publish(every: 1 / 60, on: .main, in: .common).autoconnect()
-
     var body: some View {
         VStack(spacing: 0) {
             HStack {
@@ -31,13 +29,10 @@ struct ReaderView: View {
                 externalScrollDelta: $scrollTick
             )
         }
-        .onReceive(timer) { _ in
+        .onChange(of: connectivity.scrollPulse) { _, _ in
             let pending = connectivity.consumePendingScroll()
-            if pending != 0 {
-                scrollTick = pending
-            } else {
-                scrollTick = 0
-            }
+            guard pending != 0 else { return }
+            scrollTick = pending
         }
         .onAppear { connectivity.activate() }
     }

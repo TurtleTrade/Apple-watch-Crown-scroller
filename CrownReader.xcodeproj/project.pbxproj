@@ -15,6 +15,7 @@
 		6059175848FDE14AF67E34FA /* ReaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E53EF0479F1A20D3BFDC20B /* ReaderView.swift */; };
 		74C4AD34F506ED966EBDE691 /* CrownReaderApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4E9931B88F09236DF25B5E /* CrownReaderApp.swift */; };
 		7EA5BE15F269BC736B365B69 /* WatchConnectivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B97568881B6A8A18A33E164C /* WatchConnectivity.swift */; };
+		B41A9F3E962ADB3BD918018D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E9FB3BC2143B9FED271FEC66 /* Assets.xcassets */; };
 		CCA320550DC23B81EEB00C8F /* CrownReaderWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = B0077BAFC46ECB3D688D47DA /* CrownReaderWatch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		DB03A932CA2080DE3F44B699 /* CrownReaderWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC6D07AEFB2B6B9A4F6C6C49 /* CrownReaderWatchApp.swift */; };
 		E50E2C2367C91D1469548514 /* CrownMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE8F219C2DC34FEA8D531BC2 /* CrownMessages.swift */; };
@@ -55,6 +56,7 @@
 		B97568881B6A8A18A33E164C /* WatchConnectivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchConnectivity.swift; sourceTree = "<group>"; };
 		D95E5FC3F8B6ED80995A0C0E /* CrownReader.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = CrownReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC6D07AEFB2B6B9A4F6C6C49 /* CrownReaderWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrownReaderWatchApp.swift; sourceTree = "<group>"; };
+		E9FB3BC2143B9FED271FEC66 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EE2236A5C4284D126D467045 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		F16B907F026AB124D0D4BF3F /* WatchContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchContentView.swift; sourceTree = "<group>"; };
 		FE8F219C2DC34FEA8D531BC2 /* CrownMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrownMessages.swift; sourceTree = "<group>"; };
@@ -80,6 +82,7 @@
 		76F2B1AA48FE31DE020435F5 /* Watch */ = {
 			isa = PBXGroup;
 			children = (
+				E9FB3BC2143B9FED271FEC66 /* Assets.xcassets */,
 				DC6D07AEFB2B6B9A4F6C6C49 /* CrownReaderWatchApp.swift */,
 				EE2236A5C4284D126D467045 /* Info.plist */,
 				B97568881B6A8A18A33E164C /* WatchConnectivity.swift */,
@@ -147,6 +150,7 @@
 			buildConfigurationList = 014A47B1C9CEF80062685B62 /* Build configuration list for PBXNativeTarget "CrownReaderWatch" */;
 			buildPhases = (
 				CD2AE3BA25F65EEAE33243DB /* Sources */,
+				F28E3A6F1F77E34FC9AC6BC6 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -197,6 +201,17 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F28E3A6F1F77E34FC9AC6BC6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B41A9F3E962ADB3BD918018D /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		171C69A9DF01A389B144205D /* Sources */ = {

@@ -10,7 +10,10 @@ final class WatchConnectivitySession: NSObject, ObservableObject {
     private var lastSendTime: TimeInterval = 0
     private let minInterval: TimeInterval = 1 / 45
 
-    /// Scale crown radians/degrees into scroll points on the phone.
+    private var accumulatedPoints: CGFloat = 0
+    private var flushWorkItem: DispatchWorkItem?
+
+    /// Scale crown rotation into scroll points on the phone.
     private let scrollScale: CGFloat = 12
 
     override private init() {
@@ -29,19 +32,51 @@ final class WatchConnectivitySession: NSObject, ObservableObject {
         lastCrownValue = value
         guard abs(delta) > 0.000_1 else { return }
 
-        let now = ProcessInfo.processInfo.systemUptime
-        guard now - lastSendTime >= minInterval else { return }
-        lastSendTime = now
-
         let points = -CGFloat(delta) * scrollScale
-        sendScrollDelta(points)
+        accumulatedPoints += points
+        kickTransport()
     }
 
-    private func sendScrollDelta(_ points: CGFloat) {
+    /// Sends accumulated scroll delta when rate-limit and reachability allow; reschedules if data remains.
+    private func kickTransport() {
+        flushWorkItem?.cancel()
+        flushWorkItem = nil
+
+        guard accumulatedPoints != 0 else { return }
+
         let session = WCSession.default
-        guard session.activationState == .activated, session.isReachable else { return }
-        let message: [String: Any] = [CrownMessages.deltaKey: points]
-        session.sendMessage(message, replyHandler: nil) { _ in }
+        let now = ProcessInfo.processInfo.systemUptime
+
+        if now - lastSendTime < minInterval {
+            scheduleKick(delay: lastSendTime + minInterval - now)
+            return
+        }
+
+        guard session.activationState == .activated, session.isReachable else {
+            scheduleKick(delay: 0.5)
+            return
+        }
+
+        let batch = accumulatedPoints
+        accumulatedPoints = 0
+        lastSendTime = now
+        let message: [String: Any] = [CrownMessages.deltaKey: batch]
+        session.sendMessage(message, replyHandler: nil) { [weak self] _ in
+            DispatchQueue.main.async {
+                self?.accumulatedPoints += batch
+                self?.kickTransport()
+            }
+        }
+    }
+
+    private func scheduleKick(delay: TimeInterval) {
+        flushWorkItem?.cancel()
+        let work = DispatchWorkItem { [weak self] in
+            self?.flushWorkItem = nil
+            self?.kickTransport()
+        }
+        flushWorkItem = work
+        DispatchQueue.main.asyncAfter(deadline: .now() + max(delay, 0.01), execute: work)
     }
 }
 
@@ -53,12 +88,14 @@ extension WatchConnectivitySession: WCSessionDelegate {
     ) {
         DispatchQueue.main.async {
             self.isPhoneReachable = session.isReachable
+            self.kickTransport()
         }
     }
 
     func sessionReachabilityDidChange(_ session: WCSession) {
         DispatchQueue.main.async {
             self.isPhoneReachable = session.isReachable
+            self.kickTransport()
         }
     }
 }

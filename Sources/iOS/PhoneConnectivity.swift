@@ -5,8 +5,11 @@ import WatchConnectivity
 final class PhoneConnectivity: NSObject, ObservableObject {
     static let shared = PhoneConnectivity()
 
-    /// Accumulated scroll delta from the Watch (points). Consumed by the reader each frame.
+    /// Accumulated scroll delta from the Watch (points). Consumed by the reader when `scrollPulse` changes.
     @Published private(set) var pendingScrollPoints: CGFloat = 0
+
+    /// Increments on each incoming scroll message so views can react without a timer.
+    @Published private(set) var scrollPulse: UInt = 0
 
     override private init() {
         super.init()
@@ -45,6 +48,7 @@ extension PhoneConnectivity: WCSessionDelegate {
         let delta = CGFloat(truncating: raw)
         DispatchQueue.main.async {
             self.pendingScrollPoints += delta
+            self.scrollPulse &+= 1
         }
     }
 }

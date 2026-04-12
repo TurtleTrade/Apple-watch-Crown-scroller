@@ -36,3 +36,4 @@ targets:
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: com.crownreader.watchkitapp
       INFOPLIST_FILE: Sources/Watch/Info.plist
+      ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
