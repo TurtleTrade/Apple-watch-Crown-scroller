@@ -1,0 +1,11 @@
+.git
+DerivedData
+build
+*.xcuserstate
+xcuserdata
+.swiftpm
+scripts/__pycache__
+CrownReader.xcodeproj
+Sources
+project.yml
+README.md

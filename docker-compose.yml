@@ -1,0 +1,7 @@
+# Landing page only. Build iOS/watchOS with Xcode on a Mac for App Store / TestFlight.
+services:
+  crown-reader-site:
+    build: .
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
