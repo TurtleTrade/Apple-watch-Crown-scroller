@@ -1,0 +1,66 @@
+import SwiftUI
+import UniformTypeIdentifiers
+
+struct ContentView: View {
+    @StateObject private var connectivity = PhoneConnectivity.shared
+    @State private var bookText: String = ReaderView.sampleText
+    @State private var showImporter = false
+
+    var body: some View {
+        NavigationStack {
+            ReaderView(connectivity: connectivity, bookText: $bookText)
+                .navigationTitle("Reading")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button("Import .txt") { showImporter = true }
+                    }
+                }
+                .fileImporter(
+                    isPresented: $showImporter,
+                    allowedContentTypes: [.plainText],
+                    allowsMultipleSelection: false
+                ) { result in
+                    switch result {
+                    case let .success(urls):
+                        guard let url = urls.first else { return }
+                        let accessing = url.startAccessingSecurityScopedResource()
+                        defer {
+                            if accessing { url.stopAccessingSecurityScopedResource() }
+                        }
+                        do {
+                            let data = try Data(contentsOf: url)
+                            if let s = String(data: data, encoding: .utf8) {
+                                bookText = s
+                            } else if let s = String(data: data, encoding: .utf16) {
+                                bookText = s
+                            }
+                        } catch {
+                            // Keep existing text on failure
+                        }
+                    case .failure:
+                        break
+                    }
+                }
+        }
+    }
+}
+
+private extension ReaderView {
+    static var sampleText: String {
+        """
+        Crown Reader
+
+        Put your book text here, or tap Import .txt to load a plain text file.
+
+        On your Apple Watch, open the Crown app and turn the Digital Crown to scroll this page on your iPhone. Both devices should be unlocked; the Watch app works best when the phone app is in the foreground.
+
+        This sample paragraph repeats so you can try scrolling.
+
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+
+        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+        """
+    }
+}
