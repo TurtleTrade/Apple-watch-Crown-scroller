@@ -328,7 +328,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Sources/Watch/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = com.crownreader.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.crownreader.phone.watchkitapp;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 4;
@@ -340,7 +340,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Sources/Watch/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = com.crownreader.watchkitapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.crownreader.phone.watchkitapp;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 4;

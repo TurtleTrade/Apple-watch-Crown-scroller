@@ -13,7 +13,7 @@ struct WatchContentView: View {
                 : "Open Crown Reader on iPhone and keep it in view")
                 .font(.caption2)
                 .multilineTextAlignment(.center)
-                .foregroundStyle(session.isPhoneReachable ? .secondary : .orange)
+                .foregroundColor(session.isPhoneReachable ? .secondary : .orange)
             Spacer(minLength: 0)
         }
         .padding()
@@ -21,7 +21,8 @@ struct WatchContentView: View {
         .digitalCrownRotation(
             $crownRotation,
             from: -1_000_000,
-            to: 1_000_000,
+            through: 1_000_000,
+            by: 0.1,
             sensitivity: .medium,
             isContinuous: true,
             isHapticFeedbackEnabled: true
@@ -29,7 +30,7 @@ struct WatchContentView: View {
         .onAppear {
             session.activate()
         }
-        .onChange(of: crownRotation) { _, newValue in
+        .onChange(of: crownRotation) { newValue in
             session.handleCrownValue(newValue)
         }
     }
